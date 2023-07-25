@@ -1,23 +1,25 @@
-import Link from 'next/link';
-import React from 'react';
-import PaddingContainer from '../layout/padding-container';
+'use client'
+import React, { useState } from 'react';
+import NavMenu from './nav-menu';
+import { ILink } from '@/models/client/links.model';
 
 const Navigation = () => {
-  return (
-    <div className='border-b sticky top-0 left-0 right-0 bg-white bg-opacity-50 backdrop-blur-md'>
-      <PaddingContainer>
-        <div className='py-5 flex items-center justify-between'>
-          <Link className='font-bold text-lg' href="/">Explorer</Link>
-          <nav>
-            <ul className='flex items-center gap-4 text-neutral-600'>
-              <li><Link href="/cities" >Cities</Link></li>
-              <li><Link href="/experiences">Experiences</Link></li>
-            </ul>
-          </nav>
-        </div>
-      </PaddingContainer>
-      </div>
+  const [appState, setAppState] = useState('blog')
 
+  const handleAppState = (params: string): void => {
+    setAppState(params)
+  }
+  interface ILinkWrapper {
+    [key: string]: ILink[]
+  }
+
+  const links: ILinkWrapper = {
+    'festivout': [{ name: 'Festivals', link: '/festivals'}, {name: 'settings', link:  '/festivout'}],
+    'blog': [{name: 'Cities', link: '/cities'}, {name: 'Experiences', link: '/experiences'}]
+  }
+
+  return (
+    <NavMenu app={appState} links={links[appState]} onAppStateChange={handleAppState} />
   )
 };
 export default Navigation;
