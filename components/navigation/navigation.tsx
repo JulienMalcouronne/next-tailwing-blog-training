@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import NavMenu from './nav-menu';
 import { ILink } from '@/models/client/links.model';
+import { GetStaticProps } from 'next';
 
 const Navigation = () => {
   const [appState, setAppState] = useState('blog');

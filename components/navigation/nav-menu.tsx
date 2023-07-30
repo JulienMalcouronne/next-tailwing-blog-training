@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PaddingContainer from '../layout/padding-container';
 import { ILink } from '../../models/client/links.model';
 import FestivalCard from '../cards/festival-cards/festival-card';
@@ -17,48 +17,22 @@ const NavMenu = ({
   app: string;
 }) => {
   const appSwitch: string = app == 'blog' ? 'festivout' : 'blog';
-  const festivals: Festival[] = [
-    {
-      id: 1,
-      title: 'festiv',
-      description: 'coucou',
-      imageUrl:
-        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-      tags: ['music', 'festival', 'techno'],
-    },
-    {
-      id: 2,
-      title: 'festiv',
-      description: 'coucou',
-      imageUrl:
-        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-      tags: ['music', 'festival', 'techno'],
-    },
-    {
-      id: 3,
-      title: 'festiv',
-      description: 'coucou',
-      imageUrl:
-        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-      tags: ['music', 'festival', 'techno'],
-    },
-    {
-      id: 4,
-      title: 'festiv',
-      description: 'coucou',
-      imageUrl:
-        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-      tags: ['music', 'festival', 'techno'],
-    },
-    {
-      id: 5,
-      title: 'festiv',
-      description: 'coucou',
-      imageUrl:
-        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-      tags: ['music', 'festival', 'techno'],
-    },
-  ];
+  const [festivals, setFestivals] = useState([]);
+
+  const getAllFestivals = async () => {
+    try {
+      const res = await fetch('/api/festivals');
+      const festivals = await res.json();
+      setFestivals(festivals);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllFestivals();
+  }, []);
+
   return (
     <div>
       <div className="border-b sticky top-0 left-0 right-0 bg-white bg-opacity-50 backdrop-blur-md">
@@ -87,7 +61,7 @@ const NavMenu = ({
         </PaddingContainer>
       </div>
       <CardContainer>
-        {festivals.map((f: Festival, i: number) => (
+        {festivals?.map((f: Festival, i: number) => (
           <FestivalCard key={i} festival={f} />
         ))}
       </CardContainer>
