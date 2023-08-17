@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import PaddingContainer from '../layout/padding-container';
 import { ILink } from '../../models/client/links.model';
 import FestivalCard from '../cards/festival-cards/festival-card';
 import CardContainer from '../cards/cards-container/card-container';
 import { Festival } from '@/models/client/festival.model';
+import Form from '../form/form';
 
 const NavMenu = ({
   onAppStateChange,
@@ -27,6 +28,19 @@ const NavMenu = ({
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let form =
+      (document.querySelector('#form-festival') as HTMLFormElement) ??
+      undefined;
+    let data = new FormData(form);
+    let formObj = {};
+    // todo find a better way to manage that
+    // for (let pair of data.entries()) {
+    //   formObj[pair[0]] = pair[1];
+    // }
   };
 
   useEffect(() => {
@@ -61,6 +75,12 @@ const NavMenu = ({
         </PaddingContainer>
       </div>
       <CardContainer>
+        <Form
+          formId={'form-festival'}
+          initialValue={{ data: 0 }}
+          submitFunction={submit}
+          fields={[{ initialValue: undefined, type: 'number' }]}
+        ></Form>
         {festivals?.map((f: Festival, i: number) => (
           <FestivalCard key={i} festival={f} />
         ))}

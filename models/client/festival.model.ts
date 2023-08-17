@@ -4,7 +4,6 @@ interface IFestival {
   description: string;
   tags: string[];
   imageUrl: string;
-
 }
 
 export class Festival implements IFestival {
