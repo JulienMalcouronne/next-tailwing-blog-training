@@ -1,5 +1,10 @@
 import { IInputProps } from '@/models/client/input.model';
-import { FormEventHandler } from 'react';
+import {
+  FormEventHandler,
+  LegacyRef,
+  MutableRefObject,
+  ReactElement,
+} from 'react';
 import Input from './inputs/input';
 
 interface IFormProps {
@@ -9,13 +14,22 @@ interface IFormProps {
   submitFunction: FormEventHandler<HTMLFormElement>;
   initialValue: Record<string, unknown>;
   fields: IInputProps[];
+  refForm: LegacyRef<HTMLFormElement>;
 }
 
-const Form = ({ submitFunction, fields, formId }: IFormProps) => {
+const Form = ({
+  submitFunction,
+  fields,
+  formId,
+  refForm,
+}: IFormProps): ReactElement<HTMLFormElement> => {
   return (
-    <form id={formId} onSubmit={submitFunction}>
+    <form ref={refForm} id={formId} onSubmit={submitFunction}>
       {fields.map((f: IInputProps, i: number) => (
         <Input
+          label={f.label}
+          id={f.id}
+          name={f.name}
           key={i}
           initialValue={f.initialValue}
           type={f.type}

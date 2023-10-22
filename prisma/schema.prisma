@@ -9,22 +9,32 @@ datasource db {
 }
 
 model Festival {
-  id          String  @id @default(cuid())
-  title       String
-  description String?
-  published   Boolean @default(false)
-  authorId    String?
-  author      User?   @relation(fields: [authorId], references: [id])
+  id                   String                 @id @default(cuid())
+  title                String
+  description          String?
+  published            Boolean                @default(false)
+  authorId             String?
+  author               User?                  @relation(fields: [authorId], references: [id])
+  FestivalParticipants FestivalParticipants[]
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String?
-  password  String
-  email     String?    @unique
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
-  festivals Festival[]
+  id                   String                 @id @default(cuid())
+  name                 String?
+  password             String
+  email                String?                @unique
+  createdAt            DateTime               @default(now()) @map("created_at")
+  updatedAt            DateTime               @updatedAt @map("updated_at")
+  festivals            Festival[]
+  FestivalParticipants FestivalParticipants[]
 
   @@map("users")
+}
+
+model FestivalParticipants {
+  id         String   @id @default(cuid())
+  festival   Festival @relation(fields: [festivalId], references: [id])
+  festivalId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
 }

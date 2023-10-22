@@ -1,14 +1,18 @@
 import { IInputProps } from '@/models/client/input.model';
 
-const Input = ({ type, setField, initialValue }: IInputProps) => {
+const Input = ({ type, setField, initialValue, id, label }: IInputProps) => {
   return (
-    <input
-      type={type}
-      value={initialValue}
-      onChange={(event) => {
-        setField ? setField(event.target.value) : '';
-      }}
-    />
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input
+        id={id}
+        type={type}
+        value={initialValue}
+        onChange={(event) => {
+          setField ? setField(event.target.value) : '';
+        }}
+      />
+    </div>
   );
 };
 

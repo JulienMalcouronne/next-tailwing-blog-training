@@ -1,10 +1,10 @@
 // https://nextjs.org/docs/api-routes/introduction
 
-import { NextApiHandler } from "next";
+import { NextApiHandler, NextApiResponse } from "next";
 import { ErrorResponse } from "@/pages/utils/api";
 import {prisma} from '@/app/db'
 import { Festival } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
 
@@ -27,3 +27,22 @@ export const GET: NextApiHandler<GetResponse | ErrorResponse > = async (_, res) 
       return res
     }
 };
+
+
+
+export const POST = async (request: NextRequest, res: NextApiResponse) => {
+
+  try {
+    const body = await request.json()
+    const res = await prisma.festival.create({data: body})
+
+  return NextResponse.json(res)
+  } catch (error) {
+      // res.status(403).json({ error: {
+      //   message: "Forbidden"
+      // } });
+      // return res
+  }
+
+
+}

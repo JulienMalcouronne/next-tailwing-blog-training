@@ -1,6 +1,13 @@
 'use client';
 import Link from 'next/link';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, {
+  FormEvent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+  useRef,
+  LegacyRef,
+} from 'react';
 import PaddingContainer from '../layout/padding-container';
 import { ILink } from '../../models/client/links.model';
 import FestivalCard from '../cards/festival-cards/festival-card';
@@ -19,6 +26,7 @@ const NavMenu = ({
 }) => {
   const appSwitch: string = app == 'blog' ? 'festivout' : 'blog';
   const [festivals, setFestivals] = useState([]);
+  const [newFestivalName, setFestivalName] = useState('');
 
   const getAllFestivals = async () => {
     try {
@@ -30,17 +38,29 @@ const NavMenu = ({
     }
   };
 
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const createFestival = async (payload) => {
+    try {
+      const res = await fetch('/api/festivals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      return res.json();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const submit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let form =
-      (document.querySelector('#form-festival') as HTMLFormElement) ??
-      undefined;
-    let data = new FormData(form);
-    let formObj = {};
-    // todo find a better way to manage that
-    // for (let pair of data.entries()) {
-    //   formObj[pair[0]] = pair[1];
-    // }
+    try {
+      const data = await createFestival({ title: newFestivalName });
+      setFestivals([...festivals, data]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -79,11 +99,22 @@ const NavMenu = ({
           formId={'form-festival'}
           initialValue={{ data: 0 }}
           submitFunction={submit}
-          fields={[{ initialValue: undefined, type: 'number' }]}
+          fields={[
+            {
+              setField: setFestivalName,
+              initialValue: newFestivalName,
+              type: 'text',
+              name: 'title',
+              id: 'title',
+              label: 'title',
+            },
+          ]}
         ></Form>
-        {festivals?.map((f: Festival, i: number) => (
-          <FestivalCard key={i} festival={f} />
-        ))}
+        {festivals?.length
+          ? festivals?.map((f: Festival, i: number) => (
+              <FestivalCard key={i} festival={f} />
+            ))
+          : ''}
       </CardContainer>
     </div>
   );
