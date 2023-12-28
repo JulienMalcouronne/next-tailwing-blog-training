@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 type GetResponse = {
-  data: Festival
+  data: Festival[]
 };
 
 export const GET: NextApiHandler<GetResponse | ErrorResponse > = async (_, res) => {

@@ -1,5 +1,5 @@
 export interface IFestival {
-  id: number;
+  id: string;
   title: string;
   description: string;
   tags: string[];
@@ -7,7 +7,7 @@ export interface IFestival {
 }
 
 export class Festival implements IFestival {
-  id: number;
+  id: string;
   title: string;
   description: string;
   tags: string[];
