@@ -86,22 +86,23 @@ const NavMenu = ({
           </div>
         </PaddingContainer>
       </div>
+      <Form
+        formId={'form-festival'}
+        initialValue={{ data: '' }}
+        submitFunction={submit}
+        fields={[
+          {
+            setField: setFestivalName,
+            initialValue: newFestivalName,
+            type: 'text',
+            name: 'title',
+            id: 'title',
+            label: 'title',
+            required: true,
+          },
+        ]}
+      />
       <CardContainer>
-        <Form
-          formId={'form-festival'}
-          initialValue={{ data: '' }}
-          submitFunction={submit}
-          fields={[
-            {
-              setField: setFestivalName,
-              initialValue: newFestivalName,
-              type: 'text',
-              name: 'title',
-              id: 'title',
-              label: 'title',
-            },
-          ]}
-        ></Form>
         {festivals?.length
           ? festivals?.map((f: Festival, i: number) => (
               <FestivalCard key={i} festival={f} />

@@ -13,4 +13,5 @@ export interface IInputProps {
   name: string;
   id: string;
   label?: string;
+  required: boolean;
 }

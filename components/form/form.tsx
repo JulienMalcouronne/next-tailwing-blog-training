@@ -19,20 +19,26 @@ const Form = ({
   refForm,
 }: IFormProps): ReactElement<HTMLFormElement> => {
   return (
-    <form ref={refForm} id={formId} onSubmit={submitFunction}>
-      {fields.map((f: IInputProps, i: number) => (
-        <Input
-          label={f.label}
-          id={f.id}
-          name={f.name}
-          key={i}
-          initialValue={f.initialValue}
-          type={f.type}
-          setField={f.setField}
-        ></Input>
-      ))}
+    <form className="p-2" ref={refForm} id={formId} onSubmit={submitFunction}>
+      <fieldset>
+        {fields.map((f: IInputProps, i: number) => (
+          <Input
+            label={f.label}
+            id={f.id}
+            name={f.name}
+            key={i}
+            initialValue={f.initialValue}
+            type={f.type}
+            required={f.required}
+            setField={f.setField}
+          />
+        ))}
+      </fieldset>
 
-      <button type="submit" className="btn bg-teal-500 p-3 rounded-md">
+      <button
+        type="submit"
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-3"
+      >
         Submit
       </button>
     </form>
