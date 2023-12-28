@@ -1,18 +1,11 @@
 'use client';
 import Link from 'next/link';
-import React, {
-  FormEvent,
-  SyntheticEvent,
-  useEffect,
-  useState,
-  useRef,
-  LegacyRef,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import PaddingContainer from '../layout/padding-container';
 import { ILink } from '../../models/client/links.model';
 import FestivalCard from '../cards/festival-cards/festival-card';
 import CardContainer from '../cards/cards-container/card-container';
-import { Festival } from '@/models/client/festival.model';
+import { Festival, IFestival } from '@/models/client/festival.model';
 import Form from '../form/form';
 
 const NavMenu = ({
@@ -25,7 +18,7 @@ const NavMenu = ({
   app: string;
 }) => {
   const appSwitch: string = app == 'blog' ? 'festivout' : 'blog';
-  const [festivals, setFestivals] = useState([]);
+  const [festivals, setFestivals] = useState<IFestival[]>([]);
   const [newFestivalName, setFestivalName] = useState('');
 
   const getAllFestivals = async () => {
@@ -38,19 +31,17 @@ const NavMenu = ({
     }
   };
 
-  const createFestival = async (payload) => {
-    try {
-      const res = await fetch('/api/festivals', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-      return res.json();
-    } catch (error) {
-      console.log(error);
-    }
+  const createFestival = async (
+    payload: Pick<IFestival, 'title'>,
+  ): Promise<IFestival> => {
+    const res = await fetch('/api/festivals', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    return res.json();
   };
 
   const submit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -58,8 +49,9 @@ const NavMenu = ({
     try {
       const data = await createFestival({ title: newFestivalName });
       setFestivals([...festivals, data]);
+      setFestivalName('');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -97,7 +89,7 @@ const NavMenu = ({
       <CardContainer>
         <Form
           formId={'form-festival'}
-          initialValue={{ data: 0 }}
+          initialValue={{ data: '' }}
           submitFunction={submit}
           fields={[
             {

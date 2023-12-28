@@ -1,10 +1,5 @@
 import { IInputProps } from '@/models/client/input.model';
-import {
-  FormEventHandler,
-  LegacyRef,
-  MutableRefObject,
-  ReactElement,
-} from 'react';
+import { FormEventHandler, LegacyRef, ReactElement } from 'react';
 import Input from './inputs/input';
 
 interface IFormProps {
@@ -14,7 +9,7 @@ interface IFormProps {
   submitFunction: FormEventHandler<HTMLFormElement>;
   initialValue: Record<string, unknown>;
   fields: IInputProps[];
-  refForm: LegacyRef<HTMLFormElement>;
+  refForm?: LegacyRef<HTMLFormElement>;
 }
 
 const Form = ({
@@ -37,7 +32,7 @@ const Form = ({
         ></Input>
       ))}
 
-      <button type="submit" className="btn bg-teal-500">
+      <button type="submit" className="btn bg-teal-500 p-3 rounded-md">
         Submit
       </button>
     </form>
