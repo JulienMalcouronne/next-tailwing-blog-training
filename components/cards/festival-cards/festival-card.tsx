@@ -1,9 +1,9 @@
-import { Festival } from '@/models/client/festival.model';
+import { IFestival } from '@/models/client/festival.model';
 import MainCard from '../main-card';
 import CardHeader from '../card-content/card-header';
 import CardFooter from '../card-content/card-footer';
 
-const FestivalCard = ({ festival }: { festival: Festival }) => {
+const FestivalCard = ({ festival }: { festival: IFestival }) => {
   return (
     <MainCard>
       <CardHeader>

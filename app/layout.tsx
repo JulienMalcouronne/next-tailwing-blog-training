@@ -1,5 +1,5 @@
 import Navigation from '@/components/navigation/navigation';
-import './globals.css';
+import './globals.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 

@@ -3,10 +3,10 @@
 import CardContainer from '@/components/cards/cards-container/card-container';
 import FestivalCard from '@/components/cards/festival-cards/festival-card';
 import { IFestival } from '@/models/client/festival.model';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import '../../app/globals.css';
 
-const FestivalPage = () => {
+const FestivalsPage = () => {
   const [festivals, setFestivals] = useState<IFestival[]>([]);
 
   const getAllFestivals = async () => {
@@ -20,18 +20,20 @@ const FestivalPage = () => {
   };
 
   useEffect(() => {
-    getAllFestivals();
+    if (typeof window !== undefined) getAllFestivals();
   }, []);
 
   return (
     <CardContainer>
       {festivals?.length
-        ? festivals?.map((f: IFestival, i: number) => (
-            <FestivalCard key={i} festival={f} />
+        ? festivals?.map((f: IFestival) => (
+            <Link href={`/festivals/${f.id}`}>
+              <FestivalCard key={f.id} festival={f} />
+            </Link>
           ))
         : ''}
     </CardContainer>
   );
 };
 
-export default FestivalPage;
+export default FestivalsPage;
