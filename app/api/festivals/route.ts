@@ -20,13 +20,9 @@ export const GET: NextApiHandler<GetResponse | ErrorResponse > = async (_, res) 
 
       return NextResponse.json(festivals)
     } catch (error) {
-
-      res.status(403).json({ error: {
-        message: "Forbidden"
-      } });
-      return res
-    }
-};
+      console.error(error)
+  }
+}
 
 
 
@@ -38,6 +34,7 @@ export const POST = async (request: NextRequest, res: NextApiResponse) => {
 
   return NextResponse.json(res)
   } catch (error) {
+    console.error(error)
       // res.status(403).json({ error: {
       //   message: "Forbidden"
       // } });

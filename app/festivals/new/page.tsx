@@ -8,16 +8,17 @@ const NewFestivalPage = () => {
   const [file, setFile] = useState<File>();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event);
     if (event?.target?.files) {
       const currentFile = event.target.files[0];
       setFile(currentFile);
-      console.log(currentFile, file);
     }
   };
 
+  const setName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFestivalName(event.target.value);
+  };
+
   const handleUpload = async () => {
-    console.log(file);
     if (!file) return;
 
     const formData = new FormData();
@@ -26,9 +27,9 @@ const NewFestivalPage = () => {
     const response = await fetch('/api/files', {
       method: 'POST',
     });
-    console.log(response);
+
     const { url } = await response.json();
-    console.log(url);
+
     await fetch(url, {
       method: 'PUT',
       body: formData,
@@ -52,7 +53,6 @@ const NewFestivalPage = () => {
     e.preventDefault();
 
     try {
-      console.log('goes here ? ');
       await handleUpload();
       // await createFestival({ title: newFestivalName });
       // setFestivalName('');
@@ -67,7 +67,7 @@ const NewFestivalPage = () => {
       submitFunction={submit}
       fields={[
         {
-          setField: setFestivalName,
+          setField: setName,
           initialValue: newFestivalName,
           type: 'text',
           name: 'title',

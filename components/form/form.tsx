@@ -1,7 +1,6 @@
 import { IInputProps } from '@/models/client/input.model';
 import { FormEventHandler, LegacyRef, ReactElement } from 'react';
 import Input from './inputs/input';
-import InputFile from './inputs/input-file';
 
 interface IFormProps {
   // check if when implemented this state props func is useful or not

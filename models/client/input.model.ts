@@ -9,18 +9,8 @@ type InputTypes =
 
 export interface IInputProps {
   type: InputTypes;
-  setField?: React.Dispatch<React.SetStateAction<string>>;
+  setField?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   initialValue?: string;
-  name: string;
-  id: string;
-  label?: string;
-  required: boolean;
-}
-
-export interface IInputFileProps {
-  type: InputTypes;
-  setField?: React.Dispatch<React.SetStateAction<string>>;
-  initialValue?: File;
   name: string;
   id: string;
   label?: string;

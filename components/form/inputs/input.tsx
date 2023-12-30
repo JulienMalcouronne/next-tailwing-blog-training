@@ -23,9 +23,7 @@ const Input = ({
         value={initialValue}
         required={required}
         onChange={(event) => {
-          setField
-            ? setField(type === 'file' ? event : event.target.value)
-            : '';
+          setField ? setField(event) : '';
         }}
       />
     </div>
