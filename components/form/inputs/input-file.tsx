@@ -1,6 +1,6 @@
 import { IInputProps } from '@/models/client/input.model';
 
-const Input = ({
+const InputFile = ({
   type,
   setField,
   initialValue,
@@ -23,13 +23,11 @@ const Input = ({
         value={initialValue}
         required={required}
         onChange={(event) => {
-          setField
-            ? setField(type === 'file' ? event : event.target.value)
-            : '';
+          setField ? setField(event) : '';
         }}
       />
     </div>
   );
 };
 
-export default Input;
+export default InputFile;
