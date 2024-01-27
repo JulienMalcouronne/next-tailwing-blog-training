@@ -27,8 +27,8 @@ const FestivalsPage = () => {
     <CardContainer>
       {festivals?.length
         ? festivals?.map((f: IFestival) => (
-            <Link href={`/festivals/${f.id}`}>
-              <FestivalCard key={f.id} festival={f} />
+            <Link key={f.id} href={`/festivals/${f.id}`}>
+              <FestivalCard festival={f} />
             </Link>
           ))
         : ''}
