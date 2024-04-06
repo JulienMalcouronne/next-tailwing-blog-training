@@ -2,7 +2,8 @@ import Navigation from '@/components/navigation/navigation';
 import './globals.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+import Footer from '@/components/footer/footer';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -17,12 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <UserProvider>
-        <body className={inter.className}>
-          <Navigation />
-          {children}
-        </body>
-      </UserProvider>
+      <body className={inter.className}>
+        <Navigation />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
