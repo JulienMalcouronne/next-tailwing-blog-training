@@ -5,12 +5,15 @@
   },
   "extends": ["next/core-web-vitals", "plugin:react/recommended", "prettier"],
   "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 12,
-        "sourceType": "commonjs"
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "plugins": ["react"],
-    "rules": {}
+    "ecmaVersion": 12,
+    "sourceType": "commonjs"
+  },
+  "plugins": ["react"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off"
+  }
 }

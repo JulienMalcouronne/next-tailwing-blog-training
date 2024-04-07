@@ -20,7 +20,7 @@ const FestivalPage = () => {
   };
   useEffect(() => {
     if (typeof window !== undefined) getFestival();
-  }, []);
+  });
 
   if (festival?.id) {
     return <FestivalCard festival={festival} />;
