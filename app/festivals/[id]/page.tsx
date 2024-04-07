@@ -1,27 +1,21 @@
-'use client';
-
+import { prisma } from '@/app/db';
 import FestivalCard from '@/components/cards/festival-cards/festival-card';
-import { IFestival } from '@/models/client/festival.model';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
-const FestivalPage = () => {
-  const params = useParams();
+const getFestivalById = async (id: string) => {
+  try {
+    return await prisma.festival.findFirst({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch festival');
+  }
+};
 
-  const [festival, setFestival] = useState<IFestival>();
-  const getFestival = async () => {
-    try {
-      const res = await fetch(`/api/festivals/${params?.id}`);
-      const festival = await res.json();
-      setFestival(festival);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    if (typeof window !== undefined) getFestival();
-  });
-
+const FestivalPage = async ({ params: { id } }: { params: { id: string } }) => {
+  const festival = await getFestivalById(id);
   if (festival?.id) {
     return <FestivalCard festival={festival} />;
   } else {

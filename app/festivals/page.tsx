@@ -1,27 +1,20 @@
-'use client';
-
+import type { IFestival } from '@/models/client/festival.model';
 import CardContainer from '@/components/cards/cards-container/card-container';
 import FestivalCard from '@/components/cards/festival-cards/festival-card';
-import { IFestival } from '@/models/client/festival.model';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { prisma } from '../db';
 
-const FestivalsPage = () => {
-  const [festivals, setFestivals] = useState<IFestival[]>([]);
+const getFestivals = async () => {
+  try {
+    return await prisma.festival.findMany();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch festivals');
+  }
+};
 
-  const getAllFestivals = async () => {
-    try {
-      const res = await fetch('/api/festivals');
-      const festivals = await res.json();
-      setFestivals(festivals);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (typeof window !== undefined) getAllFestivals();
-  }, []);
+const FestivalsPage = async () => {
+  const festivals = await getFestivals();
 
   return (
     <CardContainer>
