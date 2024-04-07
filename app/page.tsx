@@ -3,7 +3,23 @@ import PaddingContainer from '@/components/layout/padding-container';
 import PostCard from '@/components/post/post-card/post-card';
 import PostList from '@/components/post/post-list/post-list';
 import { DUMMY_POSTS } from '@/mocks';
-export default function Home() {
+import { prisma } from './db';
+import { notFound } from 'next/navigation';
+export default async function Home() {
+  const getAllPosts = async () => {
+    try {
+      const posts = await prisma.posts.findMany();
+      console.log(posts);
+      return posts;
+    } catch (error) {
+      console.error(error);
+      // throw new Error('Error fetching posts');
+    }
+  };
+  const posts = await getAllPosts();
+  if (!posts) {
+    // return notFound();
+  }
   return (
     <PaddingContainer>
       <main className="h-auto space-y-10">
