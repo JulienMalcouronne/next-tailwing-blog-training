@@ -20,7 +20,7 @@ const CTACard = () => {
         </p>
         <form className="mt-6 flex items-center gap-2 w-full">
           <input
-            placeholder="Write your eamil."
+            placeholder="Write your email."
             className="w-full md:w-auto placeholder:text-sm bg-white text-base rounded-md py-2 px-3 outline-none focues:ring-2 ring-neutral-600 bg-white/80"
           />
           <button className="whitespace-nowrap bg-neutral-900 rounded-md px-3 py-2 text-neutral-200">

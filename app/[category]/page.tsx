@@ -2,6 +2,7 @@ import PaddingContainer from '@/components/layout/padding-container';
 import PostList from '@/components/post/post-list/post-list';
 import { DUMMY_CATEGORIES, DUMMY_POSTS } from '@/mocks';
 import { prisma } from '../db';
+import { notFound } from 'next/navigation';
 
 export const generateStaticParams = async () => {
   return DUMMY_CATEGORIES.map((category) => {
@@ -16,8 +17,14 @@ const getCategoryData = async (slug: string) => {
       where: {
         slug,
       },
-      include: {
-        Posts,
+      select: {
+        Posts: {
+          select: {
+            author: true,
+          },
+        },
+        title: true,
+        description: true,
       },
     });
   } catch (error) {
@@ -33,7 +40,17 @@ const Page = async ({
   };
 }) => {
   const category = await getCategoryData(params.category);
-  console.log(category);
+
+  if (!category) {
+    notFound();
+  }
+  const mappedCategories = {
+    ...category,
+    Posts: category.Posts.map((post) => ({
+      ...post,
+      category: { title: category.title },
+    })),
+  };
   // const category = DUMMY_CATEGORIES.find(
   //   (category) => category.slug === params.category,
   // );
@@ -48,7 +65,7 @@ const Page = async ({
         <p className="text-lg text-neutral-600">{category?.description}</p>
       </div>
 
-      {/* <PostList posts={posts} /> */}
+      {category?.Posts?.length && <PostList posts={mappedCategories?.Posts} />}
     </PaddingContainer>
   );
 };
