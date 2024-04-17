@@ -1,5 +1,22 @@
+import { prisma } from '@/app/db';
 import Image from 'next/image';
-const CTACard = () => {
+const CTACard = async () => {
+  const formAction = async (formData: FormData) => {
+    'use server';
+    try {
+      const email = formData.get('email');
+
+      if (email)
+        await prisma.subscriber.create({
+          data: {
+            email: email as string,
+          },
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="rounded-md bg-slate-100 px-6 py-10 relative overflow-hidden">
       <div className="absolute z-10 inset-0 bg-gradient-to-br from-white/95 via-white/70 to-white/30"></div>
@@ -18,12 +35,20 @@ const CTACard = () => {
           Explore the world with me! I&apos;m travelling around the world.
           I&apos;ve visited most of the great cities. Join me!
         </p>
-        <form className="mt-6 flex items-center gap-2 w-full">
+        <form
+          action={formAction}
+          className="mt-6 flex items-center gap-2 w-full"
+        >
           <input
+            name="email"
+            type="email"
             placeholder="Write your email."
             className="w-full md:w-auto placeholder:text-sm bg-white text-base rounded-md py-2 px-3 outline-none focues:ring-2 ring-neutral-600 bg-white/80"
           />
-          <button className="whitespace-nowrap bg-neutral-900 rounded-md px-3 py-2 text-neutral-200">
+          <button
+            type="submit"
+            className="whitespace-nowrap bg-neutral-900 rounded-md px-3 py-2 text-neutral-200"
+          >
             Sign up
           </button>
         </form>

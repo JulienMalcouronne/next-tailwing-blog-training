@@ -1,15 +1,25 @@
 import PaddingContainer from '@/components/layout/padding-container';
 import PostList from '@/components/post/post-list/post-list';
-import { DUMMY_CATEGORIES, DUMMY_POSTS } from '@/mocks';
+
 import { prisma } from '../db';
 import { notFound } from 'next/navigation';
 
 export const generateStaticParams = async () => {
-  return DUMMY_CATEGORIES.map((category) => {
-    return {
-      category: category.slug,
-    };
-  });
+  try {
+    const categories = await prisma.categories.findMany({
+      select: {
+        slug: true,
+      },
+    });
+    return categories.map((category) => {
+      return {
+        category: category.slug,
+      };
+    });
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 const getCategoryData = async (slug: string) => {
   try {
@@ -18,9 +28,15 @@ const getCategoryData = async (slug: string) => {
         slug,
       },
       select: {
-        Posts: {
+        posts: {
           select: {
             author: true,
+            body: true,
+            date_created: true,
+            date_updated: true,
+            image: true,
+            slug: true,
+            title: true,
           },
         },
         title: true,
@@ -46,17 +62,11 @@ const Page = async ({
   }
   const mappedCategories = {
     ...category,
-    Posts: category.Posts.map((post) => ({
+    posts: category.posts.map((post) => ({
       ...post,
       category: { title: category.title },
     })),
   };
-  // const category = DUMMY_CATEGORIES.find(
-  //   (category) => category.slug === params.category,
-  // );
-  // const posts = DUMMY_POSTS.filter(
-  //   (post) => post.category.title.toLocaleLowerCase() === params.category,
-  // );
 
   return (
     <PaddingContainer>
@@ -65,7 +75,7 @@ const Page = async ({
         <p className="text-lg text-neutral-600">{category?.description}</p>
       </div>
 
-      {category?.Posts?.length && <PostList posts={mappedCategories?.Posts} />}
+      {category?.posts?.length && <PostList posts={mappedCategories?.posts} />}
     </PaddingContainer>
   );
 };

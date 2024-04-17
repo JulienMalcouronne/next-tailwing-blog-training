@@ -68,3 +68,8 @@ model Posts {
   author       Authors    @relation(fields: [authorId], references: [id])
   category     Categories @relation(fields: [categoryId], references: [id])
 }
+
+model Subscriber {
+  id    String @id @default(cuid())
+  email String
+}

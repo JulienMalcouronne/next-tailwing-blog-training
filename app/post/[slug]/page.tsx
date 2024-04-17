@@ -1,27 +1,61 @@
+import { prisma } from '@/app/db';
 import CTACard from '@/components/elements/cta-card/cta-card';
 import SocialLink from '@/components/elements/social-link/social-link';
 import PaddingContainer from '@/components/layout/padding-container';
 import PostBody from '@/components/post/post-body/post-body';
 import PostDetail from '@/components/post/post-detail/PostDetail';
-import { DUMMY_POSTS } from '@/mocks';
 import { notFound } from 'next/navigation';
 
 export const generateStaticParams = async () => {
-  return DUMMY_POSTS.map((post) => {
-    return {
-      slug: post.slug,
-    };
-  });
+  try {
+    const posts = await prisma.posts.findMany({
+      select: {
+        slug: true,
+      },
+    });
+    return posts.map((post) => {
+      return {
+        slug: post.slug,
+      };
+    });
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
-const Page = ({
+const fetchPost = async (slug: string) => {
+  try {
+    return await prisma.posts.findFirst({
+      where: {
+        slug,
+      },
+      select: {
+        title: true,
+        category: true,
+        author: true,
+        body: true,
+        image: true,
+        date_created: true,
+        date_updated: true,
+        description: true,
+        id: true,
+        slug: true,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const Page = async ({
   params,
 }: {
   params: {
     slug: string;
   };
 }) => {
-  const post = DUMMY_POSTS.find((post) => post.slug === params.slug);
+  const post = await fetchPost(params.slug);
   if (!post) {
     notFound();
   }
